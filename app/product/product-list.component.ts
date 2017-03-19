@@ -36,7 +36,7 @@ export class ProductListComponent implements OnInit {
 
    
     ngOnInit(): void {
-        console.log("Excuted OnInit...");
+        console.log("OnInit excuted...");
     }
 
     toogleImage(): void {
