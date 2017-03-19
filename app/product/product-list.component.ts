@@ -8,8 +8,8 @@ import { IProduct } from "./product";
 })
 export class ProductListComponent implements OnInit {
     pageTitle: string = "Product List";
-    imageWidth: number = 50;
-    imageHeight: number = 50;
+    imageWidth: number = 40;
+    imageHeight: number = 40;
     showImage: boolean = false;
     filterBy: string;
     products: IProduct[] = [
