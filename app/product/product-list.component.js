@@ -10,8 +10,8 @@ var core_1 = require("@angular/core");
 var ProductListComponent = (function () {
     function ProductListComponent() {
         this.pageTitle = "Product List";
-        this.imageWidth = 50;
-        this.imageHeight = 50;
+        this.imageWidth = 40;
+        this.imageHeight = 40;
         this.showImage = false;
         this.products = [
             {
@@ -37,7 +37,7 @@ var ProductListComponent = (function () {
         ];
     }
     ProductListComponent.prototype.ngOnInit = function () {
-        console.log("Excuted OnInit...");
+        console.log("OnInit excuted...");
     };
     ProductListComponent.prototype.toogleImage = function () {
         this.showImage = !this.showImage;

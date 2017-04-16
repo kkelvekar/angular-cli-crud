@@ -60,7 +60,7 @@
                         {{product.price | currency:'USD':true:'1.2-2'}}
                     </td>
                     <td>
-                        {{product.starRating}}
+                        <ai-star [rating]='product.starRating'></ai-star>
                     </td>
                 </tr>
             </tbody>
