@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IProduct } from "./product";
 import { ProductService } from "./product.service";
 
-@Component({
-    selector: 'pm-products',
+@Component({   
     templateUrl: 'app/product/product-list.component.html',
     styleUrls: ['app/product/product-list.component.css']
 })

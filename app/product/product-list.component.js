@@ -31,7 +31,6 @@ var ProductListComponent = (function () {
 }());
 ProductListComponent = __decorate([
     core_1.Component({
-        selector: 'pm-products',
         templateUrl: 'app/product/product-list.component.html',
         styleUrls: ['app/product/product-list.component.css']
     }),
