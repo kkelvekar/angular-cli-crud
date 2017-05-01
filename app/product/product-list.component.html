@@ -7,8 +7,7 @@
         <div class="row">
             <div class="col-md-3 pull-left">
                 <div class="form-group">
-                    <input type="text" class="form-control" id="form-group-input" placeholder="Type here to search.."
-                    [(ngModel)]='filterBy'>
+                    <input type="text" class="form-control" id="form-group-input" placeholder="Type here to search.." [(ngModel)]='filterBy'>
                 </div>
             </div>
             <div class="col-md-3 pull-right">
@@ -44,12 +43,13 @@
             <tbody>
                 <tr *ngFor="let product of products | productFilter:filterBy">
                     <td>
-                        <img *ngIf="showImage"
-                             [src]="product.imageUrl" [title]="product.productName"
-                             [style.width.px]="imageWidth" [style.height.px]="imageHeight" />
+                        <img *ngIf="showImage" [src]="product.imageUrl" [title]="product.productName" [style.width.px]="imageWidth" [style.height.px]="imageHeight"
+                        />
                     </td>
                     <td>
-                        {{product.productName}}
+                        <a [routerLink]="['/product',product.productId]">
+                            {{product.productName}}
+                        </a>
                     </td>
                     <td>
                         {{product.productCode | lowercase }}
