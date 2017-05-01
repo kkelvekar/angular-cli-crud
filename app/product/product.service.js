@@ -20,11 +20,14 @@ var ProductService = (function () {
         this._http = _http;
         this.productUrl = "api/products/products.json";
     }
-    ProductService.prototype.getProduct = function () {
+    ProductService.prototype.getProducts = function () {
         return this._http.get(this.productUrl)
             .map(function (response) { return response.json(); })
-            .do(function (data) { return console.log(JSON.stringify(data)); }) // Optional (Called after response)
             .catch(this.handleError);
+    };
+    ProductService.prototype.getProduct = function (id) {
+        return this.getProducts()
+            .map(function (products) { return products.find(function (p) { return p.productId === id; }); });
     };
     ProductService.prototype.handleError = function (error) {
         console.error(error);
