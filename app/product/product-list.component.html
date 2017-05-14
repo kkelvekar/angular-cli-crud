@@ -10,7 +10,7 @@
                     <input type="text" class="form-control" id="form-group-input" placeholder="Type here to search.." [(ngModel)]='filterBy'>
                 </div>
             </div>
-            <div class="col-md-3 pull-right">
+            <div class="col-md-3 pull-right" *ngIf="filterBy">
                 <span><b>Filter By: </b></span>{{filterBy}}
             </div>
             <div class="clearfix"></div>
