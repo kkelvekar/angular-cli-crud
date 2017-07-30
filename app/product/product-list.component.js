@@ -14,7 +14,7 @@ var product_service_1 = require("./product.service");
 var ProductListComponent = (function () {
     function ProductListComponent(_productService) {
         this._productService = _productService;
-        this.pageTitle = "Product List";
+        this.pageTitle = 'Products';
         this.imageWidth = 40;
         this.imageHeight = 40;
         this.showImage = false;

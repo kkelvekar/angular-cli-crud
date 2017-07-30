@@ -5,13 +5,15 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-3 pull-left">
+            <div class="col-md-3 .col-md-offset-1">
                 <div class="form-group">
                     <input type="text" class="form-control" id="form-group-input" placeholder="Type here to search.." [(ngModel)]='filterBy'>
                 </div>
             </div>
-            <div class="col-md-3 pull-right" *ngIf="filterBy">
-                <span><b>Filter By: </b></span>{{filterBy}}
+            <div class="col-md-2">
+                <button class="btn btn-success" [routerLink]="['/product-add']">
+                    <i class="glyphicon glyphicon-plus"></i> <small>Add Product</small>
+                </button>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -62,6 +64,11 @@
                     </td>
                     <td>
                         <ai-star [rating]='product.starRating'></ai-star>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" [routerLink]="['/product-edit',product.productId]">
+                            Edit
+                        </a>
                     </td>
                 </tr>
             </tbody>
