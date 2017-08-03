@@ -12,10 +12,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var forms_1 = require("@angular/forms");
+require("rxjs/add/operator/debounceTime");
+var generic_validator_1 = require("../shared/generic-validator");
+var number_validator_1 = require("../shared/number-validator");
 var ProductEditComponent = (function () {
     function ProductEditComponent(currentRoute, fb) {
         this.currentRoute = currentRoute;
         this.fb = fb;
+        this.displayMessage = {};
+        this.validationMessages = {
+            productName: {
+                required: 'Product name is required.',
+                minlength: 'Product name must be at least three characters.',
+                maxlength: 'Product name cannot exceed 50 characters.'
+            },
+            productCode: {
+                required: 'Product code is required.'
+            },
+            starRating: {
+                range: 'Rate the product between 1 (lowest) and 5 (highest).'
+            }
+        };
+        this.genericValidator = new generic_validator_1.GenericValidator(this.validationMessages);
     }
     ProductEditComponent.prototype.ngOnInit = function () {
         this.initViewMode();
@@ -29,10 +47,17 @@ var ProductEditComponent = (function () {
     ProductEditComponent.prototype.buildForm = function () {
         this.productForm = this.fb.group({
             productName: ['', [forms_1.Validators.required, forms_1.Validators.minLength(3), forms_1.Validators.maxLength(30)]],
-            productCode: ['', [forms_1.Validators.required]],
-            rating: '',
+            productCode: ['', forms_1.Validators.required],
+            starRating: ['', number_validator_1.NumberValidator.range(1, 5)],
             tags: this.fb.array([]),
             description: ''
+        });
+        this.initValidation();
+    };
+    ProductEditComponent.prototype.initValidation = function () {
+        var _this = this;
+        this.productForm.valueChanges.debounceTime(1000).subscribe(function (value) {
+            _this.displayMessage = _this.genericValidator.processMessages(_this.productForm);
         });
     };
     return ProductEditComponent;

@@ -1,68 +1,53 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
-       <h3 class="panel-title">{{pageTitle}}</h3>
+        <h3 class="panel-title">{{pageTitle}}</h3>
     </div>
 
     <div class="panel-body">
-        <form class="form-horizontal"
-              novalidate 
-              [formGroup]="productForm">
+        <form class="form-horizontal" novalidate [formGroup]="productForm">
             <fieldset>
-                <div class="form-group" >
+                <div class="form-group" [ngClass]="{'has-error': displayMessage.productName}">
                     <label class="col-md-2 control-label" for="productNameId">Product Name</label>
 
                     <div class="col-md-8">
-                        <input class="form-control" 
-                                id="productNameId" 
-                                type="text" 
-                                placeholder="Name (required)" 
-                                formControlName="productName"/>
-                        <span class="help-block">
-                            
+                        <input class="form-control" id="productNameId" type="text" placeholder="Name (required)" formControlName="productName" />
+                        <span class="help-block" *ngIf="displayMessage.productName">
+                            {{displayMessage.productName}}
                         </span>
                     </div>
                 </div>
-                
-                <div class="form-group" >
+
+                <div class="form-group" [ngClass]="{'has-error': displayMessage.productCode}">
                     <label class="col-md-2 control-label" for="productCodeId">Product Code</label>
 
                     <div class="col-md-8">
-                        <input class="form-control" 
-                                id="productCodeId" 
-                                type="text" 
-                                placeholder="Code (required)" 
-                                formControlName="productCode"/>
-                        <span class="help-block">
-                            
+                        <input class="form-control" id="productCodeId" type="text" placeholder="Code (required)" formControlName="productCode" />
+                        <span class="help-block" *ngIf="displayMessage.productCode">
+                            {{displayMessage.productCode}}
                         </span>
                     </div>
                 </div>
-                
-                <div class="form-group">
+
+                <div class="form-group" [ngClass]="{'has-error': displayMessage.starRating}">
                     <label class="col-md-2 control-label" for="starRatingId">Star Rating (1-5)</label>
 
                     <div class="col-md-8">
-                        <input class="form-control" 
-                                id="starRatingId" 
-                                type="text" 
-                                placeholder="Rating" />
-                        <span class="help-block">
+                        <input class="form-control" id="starRatingId" type="text" placeholder="Rating" formControlName="starRating"/>
+                        <span class="help-block" *ngIf="displayMessage.starRating">
+                            {{displayMessage.starRating}}
                         </span>
                     </div>
                 </div>
-                
+
                 <div>
                     <div class="row">
-                        <button class="col-md-offset-1 col-md-1 btn btn-default"
-                                type="button">Add Tag
+                        <button class="col-md-offset-1 col-md-1 btn btn-default" type="button">Add Tag
                         </button>
                     </div>
                     <div class="form-group">
                         <label class="col-md-2 control-label">Tag</label>
                         <div class="col-md-8">
-                            <input class="form-control"                                    
-                                    type="text" 
-                                    placeholder="Tag"/>
+                            <input class="form-control" type="text" placeholder="Tag" />
                         </div>
                     </div>
                 </div>
@@ -70,10 +55,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="descriptionId">Description</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" 
-                                id="descriptionId" 
-                                placeholder="Description"
-                                rows=3></textarea>
+                        <textarea class="form-control" id="descriptionId" placeholder="Description" rows=3></textarea>
                         <span class="help-block">
                             
                         </span>
@@ -100,8 +82,8 @@
                                style="width:80px">
                                 Delete
                             </a>
-                        </span>       
-                     </div>
+                        </span>
+                    </div>
                 </div>
             </fieldset>
         </form>
