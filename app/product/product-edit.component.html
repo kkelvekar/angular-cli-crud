@@ -5,7 +5,8 @@
 
     <div class="panel-body">
         <form class="form-horizontal"
-              novalidate>
+              novalidate 
+              [formGroup]="productForm">
             <fieldset>
                 <div class="form-group" >
                     <label class="col-md-2 control-label" for="productNameId">Product Name</label>
@@ -15,7 +16,7 @@
                                 id="productNameId" 
                                 type="text" 
                                 placeholder="Name (required)" 
-                                />
+                                formControlName="productName"/>
                         <span class="help-block">
                             
                         </span>
@@ -29,7 +30,8 @@
                         <input class="form-control" 
                                 id="productCodeId" 
                                 type="text" 
-                                placeholder="Code (required)" />
+                                placeholder="Code (required)" 
+                                formControlName="productCode"/>
                         <span class="help-block">
                             
                         </span>
@@ -93,7 +95,7 @@
                                 Cancel
                             </a>
                         </span>
-                        <span>
+                        <span *ngIf="editMode">
                             <a class="btn btn-default"
                                style="width:80px">
                                 Delete

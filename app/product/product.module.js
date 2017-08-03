@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
+var forms_1 = require("@angular/forms");
 var product_list_component_1 = require("./product-list.component");
 var product_detail_component_1 = require("./product-detail.component");
 var product_edit_component_1 = require("./product-edit.component");
@@ -23,6 +24,7 @@ var ProductModule = (function () {
 ProductModule = __decorate([
     core_1.NgModule({
         imports: [
+            forms_1.ReactiveFormsModule,
             shared_module_1.SharedModule,
             router_1.RouterModule.forChild([
                 { path: 'products', component: product_list_component_1.ProductListComponent },
