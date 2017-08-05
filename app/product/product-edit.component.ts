@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 
 import { GenericValidator } from '../shared/generic-validator';
@@ -17,6 +17,10 @@ export class ProductEditComponent implements OnInit {
     genericValidator: GenericValidator;
     validationMessages: { [key: string]: { [key: string]: string } };
     displayMessage: { [key: string]: string } = {};
+
+    get tags(): FormArray {
+        return <FormArray>this.productForm.get('tags');
+    }
 
     constructor(private currentRoute: ActivatedRoute, private fb: FormBuilder) {
         this.validationMessages = {
@@ -62,4 +66,13 @@ export class ProductEditComponent implements OnInit {
             this.displayMessage = this.genericValidator.processMessages(this.productForm);
         });
     }
+
+    addTag() {
+        this.tags.push(new FormControl());
+    }
+
+    removeTag(index: number) {
+        this.tags.removeAt(index);
+    }
+
 }

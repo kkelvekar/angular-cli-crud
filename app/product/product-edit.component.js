@@ -35,6 +35,13 @@ var ProductEditComponent = (function () {
         };
         this.genericValidator = new generic_validator_1.GenericValidator(this.validationMessages);
     }
+    Object.defineProperty(ProductEditComponent.prototype, "tags", {
+        get: function () {
+            return this.productForm.get('tags');
+        },
+        enumerable: true,
+        configurable: true
+    });
     ProductEditComponent.prototype.ngOnInit = function () {
         this.initViewMode();
         this.buildForm();
@@ -59,6 +66,12 @@ var ProductEditComponent = (function () {
         this.productForm.valueChanges.debounceTime(1000).subscribe(function (value) {
             _this.displayMessage = _this.genericValidator.processMessages(_this.productForm);
         });
+    };
+    ProductEditComponent.prototype.addTag = function () {
+        this.tags.push(new forms_1.FormControl());
+    };
+    ProductEditComponent.prototype.removeTag = function (index) {
+        this.tags.removeAt(index);
     };
     return ProductEditComponent;
 }());
