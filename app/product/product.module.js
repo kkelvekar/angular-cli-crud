@@ -16,6 +16,7 @@ var product_guard_service_1 = require("./product-guard.service");
 var product_filter_pipe_1 = require("./product-filter.pipe");
 var product_service_1 = require("./product.service");
 var shared_module_1 = require("../shared/shared.module");
+var http_helper_1 = require("../shared/http-helper");
 var ProductModule = (function () {
     function ProductModule() {
     }
@@ -44,7 +45,8 @@ ProductModule = __decorate([
         ],
         providers: [
             product_service_1.ProductService,
-            product_guard_service_1.ProductDetailGuard
+            product_guard_service_1.ProductDetailGuard,
+            http_helper_1.HttpHelper
         ]
     })
 ], ProductModule);

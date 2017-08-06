@@ -1,6 +1,8 @@
+import { ProductService } from './product.service';
+import { IProduct } from './product';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 
 import { GenericValidator } from '../shared/generic-validator';
@@ -14,6 +16,7 @@ export class ProductEditComponent implements OnInit {
     pageTitle: string;
     editMode: boolean;
     productForm: FormGroup;
+    product: IProduct;
     genericValidator: GenericValidator;
     validationMessages: { [key: string]: { [key: string]: string } };
     displayMessage: { [key: string]: string } = {};
@@ -22,7 +25,10 @@ export class ProductEditComponent implements OnInit {
         return <FormArray>this.productForm.get('tags');
     }
 
-    constructor(private currentRoute: ActivatedRoute, private fb: FormBuilder) {
+    constructor(private currentRoute: ActivatedRoute,
+        private router: Router,
+        private fb: FormBuilder,
+        private productService: ProductService) {
         this.validationMessages = {
             productName: {
                 required: 'Product name is required.',
@@ -31,6 +37,10 @@ export class ProductEditComponent implements OnInit {
             },
             productCode: {
                 required: 'Product code is required.'
+            },
+            price: {
+                required: 'Price is required.',
+                pattern: 'Price is invalid.'
             },
             starRating: {
                 range: 'Rate the product between 1 (lowest) and 5 (highest).'
@@ -54,6 +64,7 @@ export class ProductEditComponent implements OnInit {
         this.productForm = this.fb.group({
             productName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
             productCode: ['', Validators.required],
+            price: ['', Validators.required],
             starRating: ['', NumberValidator.range(1, 5)],
             tags: this.fb.array([]),
             description: ''
@@ -75,4 +86,20 @@ export class ProductEditComponent implements OnInit {
         this.tags.removeAt(index);
     }
 
+    submit(): void {
+        let product = Object.assign({}, this.product, this.productForm.value);
+        if (this.editMode) {
+            this.productService.updateProduct(product)
+                .subscribe(() => this.onSaveComplete());
+        } else {
+            this.productService.addProduct(product)
+                .subscribe(() => this.onSaveComplete());
+        }
+    }
+
+    onSaveComplete(): void {
+        // Reset the form to clear the flags
+        this.productForm.reset();
+        this.router.navigate(['/products']);
+    }
 }

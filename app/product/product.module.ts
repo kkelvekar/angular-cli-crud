@@ -11,6 +11,7 @@ import { ProductFilterPipe } from './product-filter.pipe';
 import { ProductService } from './product.service';
 
 import { SharedModule } from '../shared/shared.module';
+import { HttpHelper } from '../shared/http-helper';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { SharedModule } from '../shared/shared.module';
   ],
   providers: [
     ProductService,
-    ProductDetailGuard
+    ProductDetailGuard,
+    HttpHelper
   ]
 })
 export class ProductModule {}

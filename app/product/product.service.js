@@ -11,47 +11,58 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/do");
 require("rxjs/add/operator/map");
 require("automapper-ts/dist/automapper");
+var http_helper_1 = require("../shared/http-helper");
 var ProductService = (function () {
-    function ProductService(_http) {
-        this._http = _http;
-        this.productUrl = 'http://kkcrudapi.azurewebsites.net/Product';
+    function ProductService(http, httpHelper) {
+        this.http = http;
+        this.httpHelper = httpHelper;
+        this.productUrl = 'http://localhost:25768/Product';
     }
     ProductService.prototype.getProducts = function () {
         var _this = this;
-        return this._http.get(this.productUrl + '/GetProducts')
+        return this.http.get(this.productUrl + '/GetProducts')
             .map(function (response) { return _this.mapResponseToProduct(response.json()); })
-            .do(function (data) { return console.log(JSON.stringify(data)); }) // Optional (Called after response)
-            .catch(this.handleError);
+            .catch(this.httpHelper.handleError);
     };
     ProductService.prototype.getProduct = function (id) {
         return this.getProducts()
             .map(function (products) { return products.find(function (p) { return p.productId === id; }); });
     };
-    ProductService.prototype.handleError = function (error) {
-        console.error(error);
-        return Observable_1.Observable.throw(error.json() || 'Server error');
+    ProductService.prototype.addProduct = function (product) {
+        var productRequest = JSON.stringify(this.mapProductToResponse(product));
+        return this.http.post(this.productUrl + "/PostProduct", productRequest, this.httpHelper.jsonRequestOptions);
     };
+    ProductService.prototype.updateProduct = function (product) {
+        var productRequest = this.mapProductToResponse(product);
+        return this.http.post(this.productUrl + "/PutProduct", JSON.stringify(productRequest), this.httpHelper.jsonRequestOptions);
+    };
+    // To do - need to move in separate class
     ProductService.prototype.mapResponseToProduct = function (response) {
         automapper
             .createMap('response', 'product')
-            .forMember('productName', function (opts) { opts.mapFrom('Name'); })
-            .forMember('productCode', function (opts) { opts.mapFrom('Code'); })
-            .forMember('price', function (opts) { opts.mapFrom('Price'); })
-            .forMember('releaseDate', function (opts) { opts.mapFrom('ReleaseDate'); })
-            .forMember('starRating', function (opts) { opts.mapFrom('StarRating'); })
-            .forMember('imageUrl', function (opts) { opts.mapFrom('ImageUrl'); });
-        return automapper.map('response', 'product', response);
+            .forMember('productId', function (opts) { opts.mapFrom('id'); })
+            .forMember('productName', function (opts) { opts.mapFrom('name'); })
+            .forMember('productCode', function (opts) { opts.mapFrom('code'); });
+        return automapper.map('response', 'product', response) || [];
+    };
+    // To do - need to move in separate class
+    ProductService.prototype.mapProductToResponse = function (product) {
+        automapper
+            .createMap('product', 'response')
+            .forMember('Id', function (opts) { opts.mapFrom('productId'); })
+            .forMember('Name', function (opts) { opts.mapFrom('productName'); })
+            .forMember('code', function (opts) { opts.mapFrom('productCode'); });
+        return automapper.map('product', 'response', product);
     };
     return ProductService;
 }());
 ProductService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
+    __metadata("design:paramtypes", [http_1.Http, http_helper_1.HttpHelper])
 ], ProductService);
 exports.ProductService = ProductService;
 //# sourceMappingURL=product.service.js.map

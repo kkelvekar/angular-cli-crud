@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var product_service_1 = require("./product.service");
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var forms_1 = require("@angular/forms");
@@ -16,9 +17,11 @@ require("rxjs/add/operator/debounceTime");
 var generic_validator_1 = require("../shared/generic-validator");
 var number_validator_1 = require("../shared/number-validator");
 var ProductEditComponent = (function () {
-    function ProductEditComponent(currentRoute, fb) {
+    function ProductEditComponent(currentRoute, router, fb, productService) {
         this.currentRoute = currentRoute;
+        this.router = router;
         this.fb = fb;
+        this.productService = productService;
         this.displayMessage = {};
         this.validationMessages = {
             productName: {
@@ -28,6 +31,10 @@ var ProductEditComponent = (function () {
             },
             productCode: {
                 required: 'Product code is required.'
+            },
+            price: {
+                required: 'Price is required.',
+                pattern: 'Price is invalid.'
             },
             starRating: {
                 range: 'Rate the product between 1 (lowest) and 5 (highest).'
@@ -55,6 +62,7 @@ var ProductEditComponent = (function () {
         this.productForm = this.fb.group({
             productName: ['', [forms_1.Validators.required, forms_1.Validators.minLength(3), forms_1.Validators.maxLength(30)]],
             productCode: ['', forms_1.Validators.required],
+            price: ['', forms_1.Validators.required],
             starRating: ['', number_validator_1.NumberValidator.range(1, 5)],
             tags: this.fb.array([]),
             description: ''
@@ -73,6 +81,23 @@ var ProductEditComponent = (function () {
     ProductEditComponent.prototype.removeTag = function (index) {
         this.tags.removeAt(index);
     };
+    ProductEditComponent.prototype.submit = function () {
+        var _this = this;
+        var product = Object.assign({}, this.product, this.productForm.value);
+        if (this.editMode) {
+            this.productService.updateProduct(product)
+                .subscribe(function () { return _this.onSaveComplete(); });
+        }
+        else {
+            this.productService.addProduct(product)
+                .subscribe(function () { return _this.onSaveComplete(); });
+        }
+    };
+    ProductEditComponent.prototype.onSaveComplete = function () {
+        // Reset the form to clear the flags
+        this.productForm.reset();
+        this.router.navigate(['/products']);
+    };
     return ProductEditComponent;
 }());
 ProductEditComponent = __decorate([
@@ -80,7 +105,10 @@ ProductEditComponent = __decorate([
         templateUrl: './app/product/product-edit.component.html',
         styleUrls: ['./app/product/product-edit.component.css']
     }),
-    __metadata("design:paramtypes", [router_1.ActivatedRoute, forms_1.FormBuilder])
+    __metadata("design:paramtypes", [router_1.ActivatedRoute,
+        router_1.Router,
+        forms_1.FormBuilder,
+        product_service_1.ProductService])
 ], ProductEditComponent);
 exports.ProductEditComponent = ProductEditComponent;
 //# sourceMappingURL=product-edit.component.js.map

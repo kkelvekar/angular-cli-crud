@@ -28,6 +28,20 @@
                     </div>
                 </div>
 
+                <div class="form-group" [ngClass]="{'has-error': displayMessage.price}">
+                    <label class="col-md-2 control-label" for="priceId">Price</label>
+
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input class="form-control" id="priceId" type="text" placeholder="Price (required)" formControlName="price" />
+                        </div>
+                        <span class="help-block" *ngIf="displayMessage.price">
+                            {{displayMessage.price}}
+                        </span>
+                    </div>
+                </div>
+
                 <div class="form-group" [ngClass]="{'has-error': displayMessage.starRating}">
                     <label class="col-md-2 control-label" for="starRatingId">Star Rating (1-5)</label>
 
@@ -53,14 +67,14 @@
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </span>
                             </div>
-                        </div>                   
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="descriptionId">Description</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" id="descriptionId" placeholder="Description" rows=3></textarea>
+                        <textarea class="form-control" id="descriptionId" placeholder="Description" rows=3 formControlName="description"></textarea>
                         <span class="help-block">
                             
                         </span>
@@ -72,7 +86,8 @@
                         <span>
                             <button class="btn btn-primary"
                                     type="submit"
-                                    style="width:80px;margin-right:10px" [disabled]="!productForm.valid">
+                                    style="width:80px;margin-right:10px" [disabled]="!productForm.valid"
+                                    (click)="submit()">
                                 Save
                             </button>
                         </span>
