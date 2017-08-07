@@ -35,12 +35,23 @@
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
                             <input class="form-control" id="priceId" type="text" placeholder="Price (required)" formControlName="price" />
-                        </div>
+                        </div>                   
                         <span class="help-block" *ngIf="displayMessage.price">
                             {{displayMessage.price}}
                         </span>
                     </div>
                 </div>
+
+                <!-- <div class="form-group">
+                    <label class="col-md-2 control-label">Release Date</label>
+                    <div class="col-md-4" style="width:30%">
+                        <div class="input-group">                         
+                            <input class="form-control" id="releaseDate" type="text" formControlName="releaseDate"/>
+                            <span class="input-group-addon" (click)="toogleCalender()" style="cursor: pointer"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div> 
+                       <datepicker formControlName="releaseDate" (selectionDone)="toogleCalender()" [showWeeks]="false" *ngIf="displayCalender"></datepicker>
+                    </div>
+                </div> -->
 
                 <div class="form-group" [ngClass]="{'has-error': displayMessage.starRating}">
                     <label class="col-md-2 control-label" for="starRatingId">Star Rating (1-5)</label>
@@ -92,16 +103,16 @@
                             </button>
                         </span>
                         <span>
-                            <a class="btn btn-default"
+                            <button class="btn btn-default"
                                style="width:80px" [routerLink]="['/products']">
                                 Cancel
-                            </a>
+                            </button>
                         </span>
                         <span *ngIf="editMode">
-                            <a class="btn btn-default"
-                               style="width:80px">
+                            <button class="btn btn-default"
+                               style="width:80px" (click)="delete()">
                                 Delete
-                            </a>
+                            </button>
                         </span>
                     </div>
                 </div>

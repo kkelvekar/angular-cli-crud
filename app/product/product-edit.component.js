@@ -23,6 +23,7 @@ var ProductEditComponent = (function () {
         this.fb = fb;
         this.productService = productService;
         this.displayMessage = {};
+        this.displayCalender = false;
         this.validationMessages = {
             productName: {
                 required: 'Product name is required.',
@@ -55,8 +56,8 @@ var ProductEditComponent = (function () {
         this.initProduct();
     };
     ProductEditComponent.prototype.initViewMode = function () {
-        var productId = this.currentRoute.snapshot.params['id'];
-        this.editMode = productId !== undefined;
+        this.productId = this.currentRoute.snapshot.params['id'];
+        this.editMode = this.productId !== undefined;
         this.pageTitle = this.editMode ? 'Edit Product' : 'Add Product';
     };
     ProductEditComponent.prototype.buildForm = function () {
@@ -64,6 +65,7 @@ var ProductEditComponent = (function () {
             productName: ['', [forms_1.Validators.required, forms_1.Validators.minLength(3), forms_1.Validators.maxLength(30)]],
             productCode: ['', forms_1.Validators.required],
             price: ['', forms_1.Validators.required],
+            releaseDate: [''],
             starRating: ['', number_validator_1.NumberValidator.range(1, 5)],
             tags: this.fb.array([]),
             description: ''
@@ -79,8 +81,7 @@ var ProductEditComponent = (function () {
     ProductEditComponent.prototype.initProduct = function () {
         var _this = this;
         if (this.editMode) {
-            var productId = this.currentRoute.snapshot.params['id'];
-            this.productService.getProduct(productId)
+            this.productService.getProduct(this.productId)
                 .subscribe(function (productResponse) { return _this.onProductRetrieved(productResponse); });
         }
     };
@@ -99,6 +100,12 @@ var ProductEditComponent = (function () {
         });
         this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
     };
+    ProductEditComponent.prototype.toogleCalender = function () {
+        this.displayCalender = !this.displayCalender;
+        this.productForm.patchValue({
+            releaseDate: this.productForm.get('releaseDate').value,
+        });
+    };
     ProductEditComponent.prototype.addTag = function () {
         this.tags.push(new forms_1.FormControl());
     };
@@ -114,6 +121,13 @@ var ProductEditComponent = (function () {
         }
         else {
             this.productService.addProduct(product)
+                .subscribe(function () { return _this.onSaveComplete(); });
+        }
+    };
+    ProductEditComponent.prototype.delete = function () {
+        var _this = this;
+        if (confirm('Are you sure you want to delete this product?')) {
+            this.productService.deleteProduct(this.productId)
                 .subscribe(function () { return _this.onSaveComplete(); });
         }
     };

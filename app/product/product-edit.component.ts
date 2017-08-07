@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 
+
 import { GenericValidator } from '../shared/generic-validator';
 import { NumberValidator } from '../shared/number-validator';
 
@@ -16,10 +17,12 @@ export class ProductEditComponent implements OnInit {
     pageTitle: string;
     editMode: boolean;
     productForm: FormGroup;
+    productId: string;
     product: IProduct;
     genericValidator: GenericValidator;
     validationMessages: { [key: string]: { [key: string]: string } };
     displayMessage: { [key: string]: string } = {};
+    displayCalender: boolean = false;
 
     get tags(): FormArray {
         return <FormArray>this.productForm.get('tags');
@@ -56,8 +59,8 @@ export class ProductEditComponent implements OnInit {
     }
 
     initViewMode(): void {
-        let productId = this.currentRoute.snapshot.params['id'];
-        this.editMode = productId !== undefined;
+        this.productId = this.currentRoute.snapshot.params['id'];
+        this.editMode = this.productId !== undefined;
         this.pageTitle = this.editMode ? 'Edit Product' : 'Add Product';
     }
 
@@ -66,6 +69,7 @@ export class ProductEditComponent implements OnInit {
             productName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
             productCode: ['', Validators.required],
             price: ['', Validators.required],
+            releaseDate: [''],
             starRating: ['', NumberValidator.range(1, 5)],
             tags: this.fb.array([]),
             description: ''
@@ -81,8 +85,7 @@ export class ProductEditComponent implements OnInit {
 
     initProduct(): void {
         if (this.editMode) {
-            let productId = this.currentRoute.snapshot.params['id'];
-            this.productService.getProduct(productId)
+            this.productService.getProduct(this.productId)
                 .subscribe(productResponse => this.onProductRetrieved(productResponse));
         }
     }
@@ -104,6 +107,13 @@ export class ProductEditComponent implements OnInit {
         this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
     }
 
+    toogleCalender() {
+        this.displayCalender = !this.displayCalender;
+        this.productForm.patchValue({
+            releaseDate: this.productForm.get('releaseDate').value,
+        });
+    }
+
     addTag(): void {
         this.tags.push(new FormControl());
     }
@@ -119,6 +129,13 @@ export class ProductEditComponent implements OnInit {
                 .subscribe(() => this.onSaveComplete());
         } else {
             this.productService.addProduct(product)
+                .subscribe(() => this.onSaveComplete());
+        }
+    }
+
+    delete(): void {
+        if (confirm('Are you sure you want to delete this product?')) {
+            this.productService.deleteProduct(this.productId)
                 .subscribe(() => this.onSaveComplete());
         }
     }

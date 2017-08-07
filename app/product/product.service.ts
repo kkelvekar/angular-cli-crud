@@ -40,6 +40,11 @@ export class ProductService {
         return this.http.put(`${this.productUrl}/PutProduct`, JSON.stringify(productRequest), this.httpHelper.jsonRequestOptions);
     }
 
+    deleteProduct(Id: string): Observable<any> {
+        return this.http.delete(`${this.productUrl}/DeleteProduct?Id=${Id}`)
+                        .catch(this.httpHelper.handleError);
+    }
+
     // To do - need to move in separate class
     private mapResponseToProduct(response: Response): IProduct[] {
         automapper

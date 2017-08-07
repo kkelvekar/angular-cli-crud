@@ -42,6 +42,10 @@ var ProductService = (function () {
         var productRequest = this.mapProductToResponse(product);
         return this.http.put(this.productUrl + "/PutProduct", JSON.stringify(productRequest), this.httpHelper.jsonRequestOptions);
     };
+    ProductService.prototype.deleteProduct = function (Id) {
+        return this.http.delete(this.productUrl + "/DeleteProduct?Id=" + Id)
+            .catch(this.httpHelper.handleError);
+    };
     // To do - need to move in separate class
     ProductService.prototype.mapResponseToProduct = function (response) {
         automapper
