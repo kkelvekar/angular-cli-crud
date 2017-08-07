@@ -20,7 +20,7 @@ var ProductService = (function () {
     function ProductService(http, httpHelper) {
         this.http = http;
         this.httpHelper = httpHelper;
-        this.productUrl = 'http://localhost:25768/Product';
+        this.productUrl = 'http://kkcrudapi.azurewebsites.net/Product';
     }
     ProductService.prototype.getProducts = function () {
         var _this = this;
@@ -29,8 +29,10 @@ var ProductService = (function () {
             .catch(this.httpHelper.handleError);
     };
     ProductService.prototype.getProduct = function (id) {
-        return this.getProducts()
-            .map(function (products) { return products.find(function (p) { return p.productId === id; }); });
+        var _this = this;
+        return this.http.get(this.productUrl + "/GetProduct?Id=" + id)
+            .map(function (response) { return _this.mapResponseToProduct(response.json()); })
+            .catch(this.httpHelper.handleError);
     };
     ProductService.prototype.addProduct = function (product) {
         var productRequest = JSON.stringify(this.mapProductToResponse(product));
@@ -38,7 +40,7 @@ var ProductService = (function () {
     };
     ProductService.prototype.updateProduct = function (product) {
         var productRequest = this.mapProductToResponse(product);
-        return this.http.post(this.productUrl + "/PutProduct", JSON.stringify(productRequest), this.httpHelper.jsonRequestOptions);
+        return this.http.put(this.productUrl + "/PutProduct", JSON.stringify(productRequest), this.httpHelper.jsonRequestOptions);
     };
     // To do - need to move in separate class
     ProductService.prototype.mapResponseToProduct = function (response) {

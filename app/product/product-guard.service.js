@@ -11,24 +11,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var ProductDetailGuard = (function () {
-    function ProductDetailGuard(router) {
+var ProductGuard = (function () {
+    function ProductGuard(router) {
         this.router = router;
     }
-    ProductDetailGuard.prototype.canActivate = function (currentRoute) {
-        var productId = +currentRoute.url[1].path; // Here + sign used to convert string to numeric
-        if (isNaN(productId) || productId < 0) {
-            alert("Invalid route");
+    ProductGuard.prototype.canActivate = function (currentRoute) {
+        var productId = currentRoute.url[1].path;
+        var guidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        if (!guidPattern.test(productId)) {
+            alert('Invalid route');
             this.router.navigate(['/products']);
             return false;
         }
         return true;
     };
-    return ProductDetailGuard;
+    return ProductGuard;
 }());
-ProductDetailGuard = __decorate([
+ProductGuard = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [router_1.Router])
-], ProductDetailGuard);
-exports.ProductDetailGuard = ProductDetailGuard;
+], ProductGuard);
+exports.ProductGuard = ProductGuard;
 //# sourceMappingURL=product-guard.service.js.map

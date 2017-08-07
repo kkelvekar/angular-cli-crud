@@ -29,12 +29,9 @@ ProductModule = __decorate([
             shared_module_1.SharedModule,
             router_1.RouterModule.forChild([
                 { path: 'products', component: product_list_component_1.ProductListComponent },
-                { path: 'product/:id',
-                    canActivate: [product_guard_service_1.ProductDetailGuard],
-                    component: product_detail_component_1.ProductDetailComponent
-                },
                 { path: 'product-add', component: product_edit_component_1.ProductEditComponent },
-                { path: 'product-edit/:id', component: product_edit_component_1.ProductEditComponent }
+                { path: 'product-edit/:id', canActivate: [product_guard_service_1.ProductGuard], component: product_edit_component_1.ProductEditComponent },
+                { path: 'product/:id', canActivate: [product_guard_service_1.ProductGuard], component: product_detail_component_1.ProductDetailComponent },
             ])
         ],
         declarations: [
@@ -45,7 +42,7 @@ ProductModule = __decorate([
         ],
         providers: [
             product_service_1.ProductService,
-            product_guard_service_1.ProductDetailGuard,
+            product_guard_service_1.ProductGuard,
             http_helper_1.HttpHelper
         ]
     })

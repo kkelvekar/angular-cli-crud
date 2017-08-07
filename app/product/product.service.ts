@@ -12,7 +12,7 @@ import { HttpHelper } from '../shared/http-helper';
 
 @Injectable()
 export class ProductService {
-    private productUrl: string = 'http://localhost:25768/Product';
+    private productUrl: string = 'http://kkcrudapi.azurewebsites.net/Product';
 
     constructor(private http: Http, private httpHelper: HttpHelper) { }
 
@@ -23,9 +23,11 @@ export class ProductService {
             .catch(this.httpHelper.handleError);
     }
 
-    getProduct(id: number): Observable<IProduct> {
-        return this.getProducts()
-            .map((products: IProduct[]) => products.find(p => p.productId === id));
+    getProduct(id: string): Observable<IProduct> {
+        return this.http.get(`${this.productUrl}/GetProduct?Id=${id}`)
+            .map((response: Response) => this.mapResponseToProduct(response.json()))
+            // .do(data => console.log(JSON.stringify(data))) // Optional (Called after response)
+            .catch(this.httpHelper.handleError);
     }
 
     addProduct(product: IProduct): Observable<any> {
@@ -35,7 +37,7 @@ export class ProductService {
 
     updateProduct(product: IProduct): Observable<any> {
         let productRequest = this.mapProductToResponse(product);
-        return this.http.post(`${this.productUrl}/PutProduct`, JSON.stringify(productRequest), this.httpHelper.jsonRequestOptions);
+        return this.http.put(`${this.productUrl}/PutProduct`, JSON.stringify(productRequest), this.httpHelper.jsonRequestOptions);
     }
 
     // To do - need to move in separate class

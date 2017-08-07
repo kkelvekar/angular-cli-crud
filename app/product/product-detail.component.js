@@ -17,15 +17,14 @@ var ProductDetailComponent = (function () {
         this.currentRoute = currentRoute;
         this.router = router;
         this._productService = _productService;
-        this.pageTitle = "Product Details";
+        this.pageTitle = 'Product Details';
     }
     ProductDetailComponent.prototype.ngOnInit = function () {
-        //Simple concatination
-        //this.pageTitle += this.currentRoute.snapshot.params["id"];
+        // Simple concatination
+        // this.pageTitle += this.currentRoute.snapshot.params["id"];
         var _this = this;
-        //ES 2015 way
-        var productId = +this.currentRoute.snapshot.params["id"];
-        this.pageTitle += ": " + productId;
+        // ES 2015 way
+        var productId = this.currentRoute.snapshot.params['id'];
         this._productService.getProduct(productId)
             .subscribe(function (productResponse) { return _this.product = productResponse; }, function (error) { return _this.errorMessage = error; });
     };

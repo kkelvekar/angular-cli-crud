@@ -52,6 +52,7 @@ var ProductEditComponent = (function () {
     ProductEditComponent.prototype.ngOnInit = function () {
         this.initViewMode();
         this.buildForm();
+        this.initProduct();
     };
     ProductEditComponent.prototype.initViewMode = function () {
         var productId = this.currentRoute.snapshot.params['id'];
@@ -74,6 +75,29 @@ var ProductEditComponent = (function () {
         this.productForm.valueChanges.debounceTime(1000).subscribe(function (value) {
             _this.displayMessage = _this.genericValidator.processMessages(_this.productForm);
         });
+    };
+    ProductEditComponent.prototype.initProduct = function () {
+        var _this = this;
+        if (this.editMode) {
+            var productId = this.currentRoute.snapshot.params['id'];
+            this.productService.getProduct(productId)
+                .subscribe(function (productResponse) { return _this.onProductRetrieved(productResponse); });
+        }
+    };
+    ProductEditComponent.prototype.onProductRetrieved = function (product) {
+        if (this.productForm) {
+            this.productForm.reset();
+        }
+        this.product = product;
+        // Update the data on the form
+        this.productForm.patchValue({
+            productName: this.product.productName,
+            productCode: this.product.productCode,
+            starRating: this.product.starRating,
+            price: this.product.price,
+            description: this.product.description
+        });
+        this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
     };
     ProductEditComponent.prototype.addTag = function () {
         this.tags.push(new forms_1.FormControl());

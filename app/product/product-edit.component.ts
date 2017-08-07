@@ -52,6 +52,7 @@ export class ProductEditComponent implements OnInit {
     ngOnInit() {
         this.initViewMode();
         this.buildForm();
+        this.initProduct();
     }
 
     initViewMode(): void {
@@ -72,17 +73,42 @@ export class ProductEditComponent implements OnInit {
         this.initValidation();
     }
 
-    initValidation() {
+    initValidation(): void {
         this.productForm.valueChanges.debounceTime(1000).subscribe(value => {
             this.displayMessage = this.genericValidator.processMessages(this.productForm);
         });
     }
 
-    addTag() {
+    initProduct(): void {
+        if (this.editMode) {
+            let productId = this.currentRoute.snapshot.params['id'];
+            this.productService.getProduct(productId)
+                .subscribe(productResponse => this.onProductRetrieved(productResponse));
+        }
+    }
+
+    onProductRetrieved(product: IProduct): void {
+        if (this.productForm) {
+            this.productForm.reset();
+        }
+        this.product = product;
+
+        // Update the data on the form
+        this.productForm.patchValue({
+            productName: this.product.productName,
+            productCode: this.product.productCode,
+            starRating: this.product.starRating,
+            price: this.product.price,
+            description: this.product.description
+        });
+        this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
+    }
+
+    addTag(): void {
         this.tags.push(new FormControl());
     }
 
-    removeTag(index: number) {
+    removeTag(index: number): void {
         this.tags.removeAt(index);
     }
 
