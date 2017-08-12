@@ -27,6 +27,7 @@
       'rxjs': 'npm:rxjs',
       'automapper-ts': 'npm:automapper-ts',
       'ngx-bootstrap': 'npm:ngx-bootstrap',
+      'moment': 'npm:moment/min/moment.min.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -40,7 +41,10 @@
       "automapper-ts": {
         defaultExtension: 'js'
       },
-      'ngx-bootstrap': { format: 'cjs', main: 'bundles/ngx-bootstrap.umd.js', defaultExtension: 'js' }
+      'ngx-bootstrap': { format: 'cjs', main: 'bundles/ngx-bootstrap.umd.js', defaultExtension: 'js' },
+      moment: {
+        defaultExtension: 'js'
+      }
     }
   });
 })(this);

@@ -1,13 +1,14 @@
 import { ProductService } from './product.service';
 import { IProduct } from './product';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
+import * as moment from 'moment';
 
 
-import { GenericValidator } from '../shared/generic-validator';
-import { NumberValidator } from '../shared/number-validator';
+import { GenericValidator } from '../shared/helpers/generic-validator';
+import { NumberValidator } from '../shared/helpers/number-validator';
 
 @Component({
     templateUrl: './app/product/product-edit.component.html',
@@ -31,7 +32,8 @@ export class ProductEditComponent implements OnInit {
     constructor(private currentRoute: ActivatedRoute,
         private router: Router,
         private fb: FormBuilder,
-        private productService: ProductService) {
+        private productService: ProductService,
+        private cdRef: ChangeDetectorRef) {
         this.validationMessages = {
             productName: {
                 required: 'Product name is required.',
@@ -52,6 +54,11 @@ export class ProductEditComponent implements OnInit {
         this.genericValidator = new GenericValidator(this.validationMessages);
     }
 
+    ngAfterViewChecked() {
+        // explicit change detection to avoid "expression-has-changed-after-it-was-checked-error"
+        this.cdRef.detectChanges();
+    }
+
     ngOnInit() {
         this.initViewMode();
         this.buildForm();
@@ -68,8 +75,9 @@ export class ProductEditComponent implements OnInit {
         this.productForm = this.fb.group({
             productName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
             productCode: ['', Validators.required],
-            price: ['', Validators.required],
+            price: ['', [Validators.required]],
             releaseDate: [''],
+            calenderReleaseDate: new Date(),
             starRating: ['', NumberValidator.range(1, 5)],
             tags: this.fb.array([]),
             description: ''
@@ -92,7 +100,9 @@ export class ProductEditComponent implements OnInit {
 
     onProductRetrieved(product: IProduct): void {
         if (this.productForm) {
-            this.productForm.reset();
+            this.productForm.reset({
+                calenderReleaseDate: new Date() // To handle null exception from datetimepicker component from ngx-bootstrap
+            });
         }
         this.product = product;
 
@@ -100,6 +110,8 @@ export class ProductEditComponent implements OnInit {
         this.productForm.patchValue({
             productName: this.product.productName,
             productCode: this.product.productCode,
+            releaseDate: this.product.releaseDate,
+            calenderReleaseDate: this.product.releaseDate === '' ? moment() : moment(this.product.releaseDate, 'DD/MM/YYYY'),
             starRating: this.product.starRating,
             price: this.product.price,
             description: this.product.description
@@ -108,10 +120,16 @@ export class ProductEditComponent implements OnInit {
     }
 
     toogleCalender() {
-        this.productForm.patchValue({
-            releaseDate: this.productForm.get('releaseDate').value,
-        });
         this.displayCalender = !this.displayCalender;
+    }
+
+    onReleaseDateSelected() {
+        this.displayCalender = false;
+        let selectedDate = this.productForm.get('calenderReleaseDate').value;
+        this.productForm.patchValue({
+            releaseDate: selectedDate !== null ? moment(selectedDate).format('DD/MM/YYYY') : ''
+        });
+
     }
 
     addTag(): void {
@@ -142,7 +160,9 @@ export class ProductEditComponent implements OnInit {
 
     onSaveComplete(): void {
         // Reset the form to clear the flags
-        this.productForm.reset();
+        this.productForm.reset({
+            calenderReleaseDate: new Date() // To handle null exception from datetimepicker component from ngx-bootstrap
+        });
         this.router.navigate(['/products']);
     }
 }

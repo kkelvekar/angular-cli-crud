@@ -12,7 +12,7 @@ import { ProductFilterPipe } from './product-filter.pipe';
 import { ProductService } from './product.service';
 
 import { SharedModule } from '../shared/shared.module';
-import { HttpHelper } from '../shared/http-helper';
+import { HttpHelper } from '../shared/helpers/http-helper';
 
 @NgModule({
   imports: [

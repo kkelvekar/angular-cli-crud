@@ -15,7 +15,7 @@ require("rxjs/add/operator/catch");
 require("rxjs/add/operator/do");
 require("rxjs/add/operator/map");
 require("automapper-ts/dist/automapper");
-var http_helper_1 = require("../shared/http-helper");
+var http_helper_1 = require("../shared/helpers/http-helper");
 var ProductService = (function () {
     function ProductService(http, httpHelper) {
         this.http = http;

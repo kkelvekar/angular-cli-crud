@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import 'automapper-ts/dist/automapper';
 
 import { IProduct } from './product';
-import { HttpHelper } from '../shared/http-helper';
+import { HttpHelper } from '../shared/helpers/http-helper';
 
 
 @Injectable()
