@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DatepickerModule } from 'ngx-bootstrap';
 
 import { ProductListComponent } from './product-list.component';
 import { ProductDetailComponent } from './product-detail.component';
@@ -16,6 +17,7 @@ import { HttpHelper } from '../shared/http-helper';
 @NgModule({
   imports: [
     ReactiveFormsModule,
+    DatepickerModule.forRoot(),
     SharedModule,
     RouterModule.forChild([
       { path: 'products', component: ProductListComponent },

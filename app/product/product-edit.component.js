@@ -101,10 +101,10 @@ var ProductEditComponent = (function () {
         this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
     };
     ProductEditComponent.prototype.toogleCalender = function () {
-        this.displayCalender = !this.displayCalender;
         this.productForm.patchValue({
             releaseDate: this.productForm.get('releaseDate').value,
         });
+        this.displayCalender = !this.displayCalender;
     };
     ProductEditComponent.prototype.addTag = function () {
         this.tags.push(new forms_1.FormControl());

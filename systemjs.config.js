@@ -26,6 +26,7 @@
       // other libraries
       'rxjs': 'npm:rxjs',
       'automapper-ts': 'npm:automapper-ts',
+      'ngx-bootstrap': 'npm:ngx-bootstrap',
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -38,7 +39,8 @@
       },
       "automapper-ts": {
         defaultExtension: 'js'
-      }
+      },
+      'ngx-bootstrap': { format: 'cjs', main: 'bundles/ngx-bootstrap.umd.js', defaultExtension: 'js' }
     }
   });
 })(this);

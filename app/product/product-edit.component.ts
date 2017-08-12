@@ -108,10 +108,10 @@ export class ProductEditComponent implements OnInit {
     }
 
     toogleCalender() {
-        this.displayCalender = !this.displayCalender;
         this.productForm.patchValue({
             releaseDate: this.productForm.get('releaseDate').value,
         });
+        this.displayCalender = !this.displayCalender;
     }
 
     addTag(): void {
