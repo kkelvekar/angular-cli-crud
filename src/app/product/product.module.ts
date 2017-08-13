@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +11,7 @@ import { ProductEditComponent } from './product-edit.component';
 import { ProductGuard } from './product-guard.service';
 import { ProductFilterPipe } from './product-filter.pipe';
 import { ProductService } from './product.service';
+import { ProductMapping } from './product-mapping';
 
 import { SharedModule } from '../shared/shared.module';
 import { HttpHelper } from '../shared/helpers/http-helper';
@@ -35,6 +37,7 @@ import { HttpHelper } from '../shared/helpers/http-helper';
   providers: [
     ProductService,
     ProductGuard,
+    ProductMapping,
     HttpHelper
   ]
 })

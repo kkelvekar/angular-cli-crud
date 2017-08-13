@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  productUrl: 'http://kkcrudapi.azurewebsites.net/Product'
 };

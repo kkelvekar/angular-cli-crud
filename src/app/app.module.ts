@@ -5,9 +5,12 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './home/welcome.component';
+import { ErrorComponent } from './shared/error.component';
+import { ErrorService } from './shared/error.service';
 
 /* Feature Modules */
 import { ProductModule } from './product/product.module';
+
 
 @NgModule({
   imports: [
@@ -15,6 +18,7 @@ import { ProductModule } from './product/product.module';
     HttpModule,
     RouterModule.forRoot([
       { path: 'welcome', component: WelcomeComponent },
+      { path: 'error', component: ErrorComponent },
       { path: '', redirectTo: 'welcome', pathMatch: 'full' },
       { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
     ]),
@@ -22,8 +26,10 @@ import { ProductModule } from './product/product.module';
   ],
   declarations: [
     AppComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    ErrorComponent
   ],
-  bootstrap: [ AppComponent ]
+  providers: [ErrorService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
