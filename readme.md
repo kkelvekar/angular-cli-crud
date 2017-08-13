@@ -1,4 +1,8 @@
-# Apmcli
+# Angular 4 CRUD Application
+
+Simple web application which demonstrate CRUD operation by using Angular 4.
+
+# How to run ?
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.3.
 
