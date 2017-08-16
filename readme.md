@@ -2,6 +2,9 @@
 
 Simple web application which demonstrate CRUD operation by using Angular 4.
 
+## Demo
+http://kkapm.azurewebsites.net
+
 # How to run ?
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.3.
